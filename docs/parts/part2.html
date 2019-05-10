@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+    <title>Exercise 2: Initiate the binding process on an existing CocoaPod project (IOS451)</title>
+    <link rel="stylesheet" type="text/css" href="./res/styles/normalize.css">
+    <link rel="stylesheet" type="text/css" href="./res/styles/prettify.css" />
+    <link rel="stylesheet" type="text/css" href="./res/styles/styles.css">
+</head>
+
+<body>
+    <!-- Use the same title as the StartHere -->
+    <header>Build an Objective-C bindings library with Objective Sharpie - IOS451</header>
+
+    <section id="main">
+        <h2>Exercise 2: Initiate the binding process on an existing CocoaPod project (IOS451)</h2>
+<p>The primary goal of this lab is to initiate the binding process on an existing CocoaPod project using Objective Sharpie.</p>
+<p>If you haven't already, you will need to <a href="https://docs.microsoft.com/en-us/xamarin/cross-platform/macios/binding/objective-sharpie/get-started" target="_blank">download Objective Sharpie</a>. Additionally, you will need to complete this exercise on a Mac running macOS 10.10 or newer for compatiblity with Objective Sharpie.</p>
+<blockquote class="info-quote">Objective Sharpie has a minimum requirement of macOS 10.10 or newer.
+</blockquote>
+
+<hr>
+<h2>Make sure CocoaPods is installed</h2>
+<p>Make sure you have followed the steps in the <a href="https://guides.cocoapods.org/using/getting-started.html" target="_blank">CocoaPods getting started guide</a> to install CocoaPods support on your macOS development machine.</p>
+<blockquote>
+Note: CocoaPods has a dependency on Ruby.
+</blockquote>
+<p>Alternatively, you can use <a href="https://brew.sh/" target="_blank">Homebrew</a> to manage both your Ruby and CocoaPods installation.</p>
+<p class="spacing-top">
+<button class="spacing-both btn btn-toggle btn-purple" type="button" data-toggle="collapse" data-toggle-show-text="How to use Homebrew" data-toggle-hide-text="Hide" aria-expanded="false" data-target="#T35c616dc9ad44f4ab7f3df147ba9f329">How to use Homebrew</button>
+<div class="collapse" id="T35c616dc9ad44f4ab7f3df147ba9f329">
+<div class="card card-block">
+<p>
+<ol>
+<li>Install <a href="https://brew.sh/" target="_blank">Homebrew</a>.</li>
+<li>Run the following command to make sure Homebrew is up-to-date.</li>
+</ol>
+<pre class="prettyprint"><code>brew up
+</code></pre>
+
+<ol start="3">
+<li>Run the following command to install Ruby using Homebrew.</li>
+</ol>
+<pre class="prettyprint"><code>brew install ruby
+</code></pre>
+
+<ol start="4">
+<li>With Ruby installed, run the following command to install CocoaPods.</li>
+</ol>
+<pre class="prettyprint"><code>brew install CocoaPods
+</code></pre>
+
+</p>
+</div>
+</div>
+</p>
+
+<hr>
+<h2>Initialize CocoaPods project</h2>
+<p>To start, we will need to initialize our CocoaPods project with Objective Sharpie.</p>
+<ol>
+<li>Create a folder for you exercise content.</li>
+<li>Open <strong>Terminal</strong> and navigate to your exercise folder.</li>
+<li>Type the following command to initialize the project through Objective Sharpie.</li>
+</ol>
+<pre class="prettyprint"><code>sharpie pod init ios AFNetworking
+</code></pre>
+
+<blockquote>
+Note: the first time you call a CocoaPods command in a new location, which this <code>sharpie</code> command will do indirectly, CocoaPods will need to do several initialization steps that can take a while.
+</blockquote>
+
+<hr>
+<h2>Process library into an API definition</h2>
+<p>Next, we need to create our API definition with Objective Sharpie.</p>
+<p>Run the following command to create the API definition for the CocoaPod library.</p>
+<pre class="prettyprint"><code>sharpie pod bind
+</code></pre>
+
+<p>The Objective Sharpie run will complete with the creation of 2 files:</p>
+<ul>
+<li>ApiDefinitions.cs</li>
+<li>StructsAndEnums.cs</li>
+</ul>
+
+<hr>
+<h2>Exercise summary</h2>
+<p>In this exercise you saw how to initiate the binding process on an existing CocoaPod project using Objective Sharpie.</p>
+
+
+        <div class="align-right">
+            <a href="../StartHere.html">Go Back</a>
+        </div>
+
+    </section>
+
+    <script src="./res/js/jquery.min.js"></script>
+    <script src="./res/js/jquery.imagemapster.min.js"></script>
+    <script src="./res/js/imagemap.js"></script>
+    <script src="./res/js/prettify.js"></script>
+    <script src="./res/js/script.js"></script>
+
+    <footer>Copyright (C) 2018 Xamarin Inc., Microsoft. All rights reserved.<br><a target="_blank" href="http://university.xamarin.com">Visit Xamarin University for more classes and content</a></footer>
+
+</body>
+</html>
