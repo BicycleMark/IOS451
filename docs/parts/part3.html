@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+    <title>Exercise 3: Initiate the binding process on an existing Xcode framework project (IOS451)</title>
+    <link rel="stylesheet" type="text/css" href="./res/styles/normalize.css">
+    <link rel="stylesheet" type="text/css" href="./res/styles/prettify.css" />
+    <link rel="stylesheet" type="text/css" href="./res/styles/styles.css">
+</head>
+
+<body>
+    <!-- Use the same title as the StartHere -->
+    <header>Build an Objective-C bindings library with Objective Sharpie - IOS451</header>
+
+    <section id="main">
+        <h2>Exercise 3: Initiate the binding process on an existing Xcode framework project (IOS451)</h2>
+<p>The primary goal of this lab is to bind an existing Xcode Framework using Objective Sharpie.</p>
+<p>If you haven't already, you will need to <a href="https://docs.microsoft.com/en-us/xamarin/cross-platform/macios/binding/objective-sharpie/get-started" target="_blank">download Objective Sharpie</a>. Additionally, you will need to complete this exercise on a Mac running macOS 10.10 or newer for compatiblity with Objective Sharpie.</p>
+<blockquote class="info-quote">Objective Sharpie has a minimum requirement of macOS 10.10 or newer.
+</blockquote>
+
+<hr>
+<h2>Clone target library</h2>
+<p>To start, you are going to clone the Pop animation library again.</p>
+<ol>
+<li>Create a folder for you exercise content.</li>
+<li>Open <strong>Terminal</strong> and navigate to your exercise folder.</li>
+<li>Type the following command to clone the Pop library from GitHub.</li>
+</ol>
+<pre class="prettyprint"><code>git clone https://github.com/facebook/pop.git
+</code></pre>
+
+
+<hr>
+<h2>Build project with Xcode</h2>
+<p>Now, we'll build the Pop project using Xcode.</p>
+<ol>
+<li>Navigate your command-prompt to the newly Git-created <strong>pop</strong> folder.</li>
+<li>Run the following command.</li>
+</ol>
+<pre class="prettyprint"><code>xcodebuild -sdk iphoneos11.4 -arch arm64
+</code></pre>
+
+<blockquote class="info-quote">You may need to adjust the <code>-sdk</code> parameter to match an installed SDK version on your PC.
+If you are unsure what SDKs you have installed, you can list available Xcode SDKs with <code>sharpie xcode -sdks</code>.
+</blockquote>
+
+<hr>
+<h2>Process project into an API definition</h2>
+<p>Now, we can run an Objective Sharpie command to process the library into the API definition files.</p>
+<ol>
+<li>Run the following command in the <strong>pop</strong> folder. It is broken into multiple lines for easier legibility; make sure to copy the whole command.</li>
+</ol>
+<pre class="prettyprint"><code>sharpie bind -output XamarinFacebookPop -namespace FacebookPOP \
+-sdk iphoneos11.4 -scope build/Release-iphoneos/include/pop/ \
+build/Release-iphoneos/include/pop/POP.h
+</code></pre>
+
+<p>There are a few aspects that needs to be specified for the binding:</p>
+<ul>
+<li>There are a few aspects that needs to be specified for the binding:</li>
+<li>The output path used for the generated API files, for example <code>XamarinFacebookPop</code>.</li>
+<li>The namespace for the binding, for example <code>FacebookPop</code>.</li>
+<li>The iOS SDK version used to create the binding, for example <code>iphoneos11.4</code></li>
+<li>The scope used to reference header files, for example <code>build/Release-iphoneos/include/pop/</code></li>
+<li>The umbrella header file to base the binding on. The header files for this project, <strong>POP.h</strong> is located in the <strong>build/Release-iphoneos/include/pop/</strong> folder.</li>
+</ul>
+<blockquote class="info-quote">You may need to adjust the <code>-sdk</code> parameter to match an installed SDK version on your PC.
+If you are unsure what SDKs you have installed, you can list available Xcode SDKs with <code>sharpie xcode -sdks</code>.
+</blockquote>
+<p>You will see an error in the Objective Sharpie output like this, suggesting an include from <strong>POP.h</strong> wasn't found. The <strong>#import</strong> statements are defined using angle-brackets which define global includes. Using global includes requires relative or absolute paths passed to the compiler. Objective Sharpie however will not find the files, as specified, since the path is interpreted absolutely. Change the <strong>#import</strong> statement to make use quotation marks.</p>
+<pre class="prettyprint"><code>'Parsing 1 header files...
+/.../pop/build/Release-iphoneos/include/pop/POP.h:13:9: fatal error: 'pop/POPDefines.h' file not found
+#import &lt;pop/POPDefines.h&gt;
+        ^~~~~~~~~~~~~~~~~~
+
+Binding...
+1 error generated.
+Error while processing /.../pop/build/Release-iphoneos/include/pop/POP.h.'
+</code></pre>
+
+<ol start="2">
+<li>Open the <strong>POP.h</strong> file in the <strong>pop/build/Release-iphoneos/include/pop/</strong> folder and update all the <strong>#import</strong> statements.</li>
+</ol>
+<p>For example, for this import statement:</p>
+<pre class="prettyprint"><code>#import &lt;pop/POPDefines.h&gt;
+</code></pre>
+
+<p>You would update it to look like this (using quotation marks and omitting the <code>pop/</code> sub-folder.):</p>
+<pre class="prettyprint"><code>#import &quot;POPDefines.h&quot;
+</code></pre>
+
+<blockquote class="info-quote">Do not change any of the external libraries used. For example, all imports which do not include the prefix <code>pop</code>, such as <code>#import &lt;Foundation/NSException.h&gt;</code>.
+</blockquote>
+<ol start="3">
+<li>With these updates in place, re-run the <code>sharpie</code> command.</li>
+</ol>
+<p>Next, you will see that each of the referenced files from <strong>POP.h</strong> also reference other imports that need to be updated.</p>
+<p>For example, this is the error reported for the <strong>POPAnimatableProperty.h</strong> file.</p>
+<pre class="prettyprint"><code>'Parsing 1 header files...
+In file included from /.../pop/build/Release-iphoneos/include/pop/POP.h:15:
+/.../pop/build/Release-iphoneos/include/pop/POPAnimatableProperty.h:14:9: fatal error: 'pop/POPDefines.h' file not found
+#import &lt;pop/POPDefines.h&gt;
+        ^~~~~~~~~~~~~~~~~~
+
+Binding...
+  [write] ApiDefinitions.cs
+  [write] StructsAndEnums.cs'
+
+...
+</code></pre>
+
+<ol start="4">
+<li>Update the <code>#import &lt;pop/{file}.h&gt;</code> references in the remaining Pop header files, switching the statements to use quotation marks and omit the <code>pop/</code> sub-folder.</li>
+</ol>
+<p>If you miss any files, Objective Sharpie will report a similar error for any files you have remaning to update.</p>
+<ol start="5">
+<li>With these manual edits in place, run the <code>sharpie</code> command again.</li>
+</ol>
+<p>Inspect the current folder to make sure Objective Sharpie created a folder called <strong>XamarinFacebookPop</strong> containing two files.</p>
+<ul>
+<li>ApiDefinitions.cs</li>
+<li>StructsAndEnums.cs</li>
+</ul>
+
+<hr>
+<h2>Exercise summary</h2>
+<p>In this exercise you saw how to initiate the binding process on an existing Xcode Framework project using Objective Sharpie.</p>
+
+
+        <div class="align-right">
+            <a href="../StartHere.html">Go Back</a>
+        </div>
+
+    </section>
+
+    <script src="./res/js/jquery.min.js"></script>
+    <script src="./res/js/jquery.imagemapster.min.js"></script>
+    <script src="./res/js/imagemap.js"></script>
+    <script src="./res/js/prettify.js"></script>
+    <script src="./res/js/script.js"></script>
+
+    <footer>Copyright (C) 2018 Xamarin Inc., Microsoft. All rights reserved.<br><a target="_blank" href="http://university.xamarin.com">Visit Xamarin University for more classes and content</a></footer>
+
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+    <title>Exercise 4: Clean up and complete a Xamarin.iOS binding project (IOS451)</title>
+    <link rel="stylesheet" type="text/css" href="./res/styles/normalize.css">
+    <link rel="stylesheet" type="text/css" href="./res/styles/prettify.css" />
+    <link rel="stylesheet" type="text/css" href="./res/styles/styles.css">
+</head>
+
+<body>
+    <!-- Use the same title as the StartHere -->
+    <header>Build an Objective-C bindings library with Objective Sharpie - IOS451</header>
+
+    <section id="main">
+        <h2>Exercise 4: Clean up and complete a Xamarin.iOS binding project (IOS451)</h2>
+<p>The primary goal of this lab is to create and clean up the binding definition files created from a static Xcode library using Objective Sharpie and complete a Xamarin.iOS binding project using Visual Studio.</p>
+<p>If you haven't already, you will need to <a href="https://docs.microsoft.com/en-us/xamarin/cross-platform/macios/binding/objective-sharpie/get-started" target="_blank">download Objective Sharpie</a>. Additionally, you will need to complete this exercise on a Mac running macOS 10.10 or newer for compatiblity with Objective Sharpie.</p>
+<blockquote class="info-quote">To complete the exercise, you will need <a href="https://www.visualstudio.com/" target="_blank">Visual Studio for Windows or macOS</a> with the <a href="https://www.xamarin.com/visual-studio" target="_blank">Xamarin development tools</a> installed. You will also need either an emulator/simulator or a device to run the exercise on. Please see the <a href="https://university.xamarin.com/content/setupmenu" target="_blank">setup page</a> if you need help installing the Xamarin development environment.
+For compatibility with Objective Sharpiew, you will need a machine running macOS 10.10 or newer.
+</blockquote>
+
+<hr>
+<h2>Create API definition for WeatherGadget</h2>
+<p>Using a macOS machine, we will create the binding API definition files using the provided <strong>WeatherGadget</strong> library in the <strong>Exercise 4</strong> &gt; <strong>Assets</strong> folder of your copy of the cloned or downloaded <a href="https://github.com/XamarinUniversity/IOS451">course materials</a>.</p>
+<ol>
+<li>Create a folder for you exercise content.</li>
+</ol>
+<blockquote class="info-quote">Note: there are versions of Xamarin.iOS that will not handle iOS binding projects correctly when the path contains spaces. If you can avoid spaces in your working path, it might be worth doing so for this exercise.
+</blockquote>
+<ol start="2">
+<li>Copy the <strong>WeatherGadget</strong> asset folder to your new exercise folder.</li>
+<li>Use <strong>Objective Sharpie</strong> to manually bind the <strong>WeatherGadget</strong> header files.</li>
+</ol>
+<p class="spacing-top">
+<button class="spacing-both btn btn-toggle btn-purple" type="button" data-toggle="collapse" data-toggle-show-text="Show me how to create the API definition" data-toggle-hide-text="Hide" aria-expanded="false" data-target="#Ta208e4ff4e9d463a953fdbf480b341d9">Show me how to create the API definition</button>
+<div class="collapse" id="Ta208e4ff4e9d463a953fdbf480b341d9">
+<div class="card card-block">
+<p>
+<p>Run the following command in your exercise folder. It is broken into multiple lines for easier legibility; make sure to copy the whole command.</p>
+<pre class="prettyprint"><code>sharpie bind -output WeatherGadgetOut -namespace WeatherGadgetSDK \
+-sdk iphoneos11.4 -scope WeatherGadget.framework/Headers \
+WeatherGadget.framework/Headers/WeatherGadget.h
+</code></pre>
+
+<blockquote class="info-quote">You may need to adjust the <code>-sdk</code> parameter to match an installed SDK version on your PC.
+If you are unsure what SDKs you have installed, you can list available Xcode SDKs with <code>sharpie xcode -sdks</code>.
+</blockquote>
+</p>
+</div>
+</div>
+</p>
+
+<hr>
+<h2>Create Xamarin.iOS bindings library</h2>
+<p>Next, we will create a bindings library to contain our generated API definition.</p>
+<p>With our binding API definition, you could now take the resulting files and the original <strong>WeatherGadget</strong> library from the <strong>Exercise 4</strong> &gt; <strong>Assets</strong> to Visual Studio on Windows or macOS for the remainder of this exercise.</p>
+<blockquote>
+You will still require a macOS build host when using Visual Studio on Windows.
+</blockquote>
+<ide name="vs">
+<ol>
+<li>Create a new project from the <strong>File</strong> &gt; <strong>New</strong> &gt; <strong>Project...</strong> menu item.</li>
+<li>From the <strong>New Project</strong> window, select the <strong>iOS Bindings Library (Xamarin)</strong> template from the <strong>Visual C#</strong> &gt; <strong>iPhone &amp; iPad</strong> section.</li>
+</ol>
+</ide>
+<ide name="xs">
+<ol>
+<li>Create a new project from the <strong>File</strong> &gt; <strong>New Solution...</strong> menu item.</li>
+<li>From the <strong>New Project</strong> window, select the <strong>Bindings Library</strong> template from the <strong>iOS</strong> &gt; <strong>Library</strong> section.</li>
+</ol>
+</ide>
+<ol start="3">
+<li>Name the project &quot;<strong>WeatherGadgetSDK</strong>&quot;.</li>
+</ol>
+
+<hr>
+<h2>Import WeatherGadget API definition</h2>
+<ol>
+<li>Replace the contents of the binding library's <strong>ApiDefinition.cs</strong> template-generated file with the contents of the Objective Sharpie-generated <strong>ApiDefinitions.cs</strong> file.</li>
+<li>Check and clean up any <code>[Verify]</code> attributes, if any were generated.</li>
+</ol>
+<ide name="vs">
+<ol start="3">
+<li>Right-click the <strong>Native References</strong> section in the <strong>Solution Explorer</strong> and choose <strong>Add Native Framework Reference</strong>.</li>
+</ol>
+</ide>
+<ide name="xs">
+<ol start="3">
+<li>Right-click the <strong>Native References</strong> section in the <strong>Solution</strong> pad and choose <strong>Add Native Reference</strong>.</li>
+</ol>
+</ide>
+<ol start="4">
+<li>Navigate to the <strong>Exercise 4</strong> &gt; <strong>Assets</strong> folder and select the <strong>WeatherGadget.framework</strong> folder as a native reference.</li>
+</ol>
+<p class="spacing-top">
+<button class="spacing-both btn btn-toggle btn-purple" type="button" data-toggle="collapse" data-toggle-show-text="What is happening here?" data-toggle-hide-text="Hide" aria-expanded="false" data-target="#Tc07e2a5ee212421da21346dd43c25f99">What is happening here?</button>
+<div class="collapse" id="Tc07e2a5ee212421da21346dd43c25f99">
+<div class="card card-block">
+<p>
+<blockquote>
+The <strong>WeatherGadget.framework</strong> containts the static <strong>WeatherGadget</strong> binary. The library is automatically loaded by adding the framework as a <strong>Native Reference</strong>. Alternatively, you can also copy and rename <strong>WeatherGadget</strong> to <strong>WeatherGadget.a</strong> and add it as a <strong>Native Reference</strong>.
+</blockquote>
+</p>
+</div>
+</div>
+</p>
+<ol start="5">
+<li>Build the library to make sure it compiles successfully.</li>
+</ol>
+
+<hr>
+<h2>Create Xamarin.iOS application to test the binding</h2>
+<p>Now, we will create a Xamarin.iOS application that we can use to consume and test out our binding.</p>
+<ide name="vs">
+<ol>
+<li>Right-click the solution node in the <strong>Solution Explorer</strong> and click <strong>Add</strong> &gt; <strong>New Project...</strong>.</li>
+<li>Create a new <strong>Single View App</strong> project from the <strong>Visual C#</strong> &gt; <strong>iPhone &amp; iPad</strong> &gt; <strong>iOS App (Xamarin)</strong> template.</li>
+<li>Name your new iOS app &quot;<strong>WeatherGadgetApp</strong>&quot; and click <strong>OK</strong> to make your new iOS app project. You can leave the defaults for Device Support and Minimum iOS Version for this exercise.</li>
+<li>Right-click your new project's <strong>References</strong> node and select <strong>Add Reference...</strong>.</li>
+<li>Add a project reference to the <strong>WeatherGadgetSDK</strong> project and click <strong>OK</strong>.</li>
+</ol>
+</ide>
+<ide name="xs">
+<ol>
+<li>Right-click the solution node in the <strong>Solution</strong> pad and click <strong>Add</strong> &gt; <strong>Add New Project...</strong>.</li>
+<li>Create a new <strong>Single View App</strong> project from the <strong>iOS</strong> &gt; <strong>App</strong> template section.</li>
+<li>Name your new iOS app &quot;<strong>WeatherGadgetApp</strong>&quot; and click <strong>Next</strong>. You can leave the remaining fields as their defaults for this exercise.</li>
+<li>Click <strong>Create</strong> to make your new iOS app project.</li>
+<li>Right-click your new project's <strong>References</strong> node and select <strong>Edit References...</strong>.</li>
+<li>Add a project reference to the <strong>WeatherGadgetSDK</strong> project and click <strong>OK</strong>.</li>
+</ol>
+</ide>
+
+<hr>
+<h2>Verify the WeatherGadgetSDK binding in your iOS app</h2>
+<p>Now, we can test the bindings library is working correctly in the new iOS app.</p>
+<ol>
+<li>In your app view controller's <code>ViewDidLoad</code> method, create an instance of the <code>Weather</code> type.</li>
+<li>Set the <code>CurrentTemperature</code> property to <code>99f</code>.</li>
+<li>Call <code>Debug.WriteLine</code> with your instance variable's <code>CurrentTemperature</code> property to see if the value was set properly.</li>
+</ol>
+<pre class="prettyprint-collapse"><code>public override void ViewDidLoad() {
+    base.ViewDidLoad();
+
+    Weather myWeather = new Weather();
+    myWeather.CurrentTemperature = 99f;
+    Debug.WriteLine($&quot;Temperature: {myWeather.CurrentTemperature}&quot;);
+}
+</code></pre>
+
+<p>We can also test out the <code>WeatherGadgetDelegate</code> class.</p>
+<ol>
+<li>Create a new <code>GadgetDelegate</code> class in the iOS app which inherits from the <code>WeatherGadgetDelegate</code> class.</li>
+<li>Implement the required delegate member <code>DidFetchWeather</code>. When implementing the member, make sure to check the <code>NSError</code> parameter is <code>null</code>.</li>
+<li>Call <code>Debug.WriteLine</code> to report the value of the returned <code>CurrentTemperature</code>.</li>
+</ol>
+<pre class="prettyprint-collapse"><code>using System.Diagnostics;
+using Foundation;
+using WeatherSDK;
+
+namespace WeatherGadgetApp {
+    public class GadgetDelegate : WeatherGadgetDelegate{
+        public override void DidFetchWeather(Weather weather, NSError withError) {
+            if (withError == null) {
+                Debug.WriteLine($&quot;Delegate Answering: {weather.CurrentTemperature}&quot;);
+            }
+        }
+    }
+}
+</code></pre>
+
+<p>To test the delegate, we need to create a new <strong>GadgetDelegate</strong> for the <strong>WeatherGadget</strong> we created earlier.</p>
+<ol>
+<li>Back in your app view controller's <code>ViewDidLoad</code> method, create an instance of <code>GadgetDelegate</code>.</li>
+<li>Set the <code>Delegate</code> property to the new GadgetDelegate instance.</li>
+<li>Invoke the <code>FetchWeather</code> method on the <strong>WeatherGadget</strong> instance to test the delegate implementation.</li>
+</ol>
+<pre class="prettyprint-collapse"><code>public override void ViewDidLoad() {
+    base.ViewDidLoad();
+
+    ...
+
+    WeatherGadget wGadget = new WeatherGadget();
+    wGadget.Delegate = new GadgetDelegate();
+    wGadget.FetchWeather();
+}
+</code></pre>
+
+<ol start="4">
+<li>Run the application to make sure the expected <code>Debug</code> statements are logged.</li>
+</ol>
+<p>If you followed along with the provided code, you should see the following output:</p>
+<pre class="prettyprint"><code>[0:] Temperature: 99
+[0:] Delegate Answering: -20
+</code></pre>
+
+<blockquote class="info-quote">Note: If your iOS app isn't building due to missing namespaces and classes from the API definition, you may be running a version of Xamarin.iOS that will not handle iOS binding projects correctly when the path contains spaces. Try moving your exercise code to a path without spaces and try again.
+</blockquote>
+
+<hr>
+<h2>Exercise summary</h2>
+<p>In this exercise you created and cleaned up the binding definition files for a static Xcode library using Objective Sharpie. You then used the API definition files in a Xamarin.iOS binding project and tested this new bindings library in a Xamarin.iOS project.</p>
+<p>You can view the completed solution in the <strong>Exercise 4</strong> &gt; <strong>Completed</strong> folder of your copy of the cloned or downloaded <a href="https://github.com/XamarinUniversity/IOS451">course materials</a>.</p>
+
+
+        <div class="align-right">
+            <a href="../StartHere.html">Go Back</a>
+        </div>
+
+    </section>
+
+    <script src="./res/js/jquery.min.js"></script>
+    <script src="./res/js/jquery.imagemapster.min.js"></script>
+    <script src="./res/js/imagemap.js"></script>
+    <script src="./res/js/prettify.js"></script>
+    <script src="./res/js/script.js"></script>
+
+    <footer>Copyright (C) 2018 Xamarin Inc., Microsoft. All rights reserved.<br><a target="_blank" href="http://university.xamarin.com">Visit Xamarin University for more classes and content</a></footer>
+
+</body>
+</html>
